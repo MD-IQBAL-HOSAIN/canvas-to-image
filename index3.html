@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,16 +14,20 @@
     #canvas-container {
       position: relative;
     }
-    #canvas, #template {
+
+    #canvas,
+    #template {
       position: absolute;
       top: 0;
       left: 0;
     }
+
     .icon {
       cursor: pointer;
     }
   </style>
 </head>
+
 <body>
   <div class="container-fluid">
     <button id="save-button" class="btn btn-primary mt-3">Save Canvas as Image</button>
@@ -32,50 +37,36 @@
         <h3>Icons</h3>
         <div id="icons-sidebar">
           <!-- Image Icons -->
-          <img
-          class="icon draggable"
-          src="assets/icons/birthday/birthday-cake.png"
-          alt="Icon 1"
-        />
-        <img
-          class="icon draggable"
-          src="assets/icons/birthday/birthday.png"
-          alt="Icon 2"
-        />
-        <img
-          class="icon draggable"
-          src="assets/icons/birthday/cupcake.png"
-          alt="Icon 3"
-        />
+          <img class="icon draggable" src="assets/icons/birthday/birthday-cake.png" alt="Icon 1" />
+          <img class="icon draggable" src="assets/icons/birthday/birthday.png" alt="Icon 2" />
+          <img class="icon draggable" src="assets/icons/birthday/cupcake.png" alt="Icon 3" />
           <!-- Add more icons as needed -->
         </div>
       </div>
-      
+
       <!-- Right Sidebar -->
       <div class="col-md-9">
         <h3>Canvas</h3>
         <div id="canvas-container">
           <canvas id="canvas"></canvas>
-          <img
-              id="template"
-              src="assets/templates/template2.jpg"
-              alt="Template"
-            />
+          <img id="template" src="assets/templates/template2.jpg" alt="Template" /> <br>
+          <img id="template" src="assets/templates/template1.jpg" alt="Template" /> <br>
+          <img id="template" src="assets/templatestemplate2.webp" alt="Template" /> <br>
         </div>
-        
+
       </div>
     </div>
-    
+
   </div>
 
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Set canvas dimensions
       var canvas = document.getElementById('canvas');
       var ctx = canvas.getContext('2d');
       canvas.width = $('#template').width();
       canvas.height = $('#template').height();
-      
+
       // Draw template image onto canvas
       var template = document.getElementById('template');
       ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
@@ -89,7 +80,7 @@
 
       // Enable drop on the canvas
       $('#canvas').droppable({
-        drop: function(event, ui) {
+        drop: function (event, ui) {
           var icon = ui.helper.clone(); // Clone the dragged icon
           var x = ui.offset.left - $(this).offset().left;
           var y = ui.offset.top - $(this).offset().top;
@@ -109,7 +100,7 @@
       });
 
       // Enable repositioning of icons within the canvas
-      $(document).on('mousedown', '.icon', function(event) {
+      $(document).on('mousedown', '.icon', function (event) {
         var icon = $(this);
         var canvasContainer = $('#canvas-container');
         var canvas = $('#canvas');
@@ -119,7 +110,7 @@
         var offsetY = event.offsetY || event.clientY - $(event.target).offset().top;
 
         // Enable dragging of the icon within the canvas
-        $(document).on('mousemove', function(event) {
+        $(document).on('mousemove', function (event) {
           // Calculate the position of the icon based on the mouse position relative to the canvas
           var x = event.pageX - canvas.offset().left - offsetX;
           var y = event.pageY - canvas.offset().top - offsetY;
@@ -133,47 +124,48 @@
         });
 
         // Stop dragging when the mouse button is released
-        $(document).on('mouseup', function() {
+        $(document).on('mouseup', function () {
           $(document).off('mousemove');
           $(document).off('mouseup');
         });
       });
 
       // Remove icon from canvas on double click
-      $(document).on('dblclick', '.icon', function() {
+      $(document).on('dblclick', '.icon', function () {
         $(this).remove();
       });
 
-// Save canvas as image
-$('#save-button').on('click', function() {
-  var canvas = document.getElementById('canvas');
-  var ctx = canvas.getContext('2d');
+      // Save canvas as image
+      $('#save-button').on('click', function () {
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
 
-  // Clear the canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Redraw the template image onto the canvas
-  var template = document.getElementById('template');
-  ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+        // Redraw the template image onto the canvas
+        var template = document.getElementById('template');
+        ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
 
-  // Redraw icons onto the canvas
-  $('.icon').each(function() {
-    var icon = $(this);
-    var x = parseInt(icon.css('left'));
-    var y = parseInt(icon.css('top'));
-    var image = new Image();
-    image.src = icon.attr('src');
-    ctx.drawImage(image, x, y);
-  });
+        // Redraw icons onto the canvas
+        $('.icon').each(function () {
+          var icon = $(this);
+          var x = parseInt(icon.css('left'));
+          var y = parseInt(icon.css('top'));
+          var image = new Image();
+          image.src = icon.attr('src');
+          ctx.drawImage(image, x, y);
+        });
 
-  // Convert canvas to data URL and save as image
-  var imgData = canvas.toDataURL('image/png','image/jpg','image/jpeg','image/webp');
-  var link = document.createElement('a');
-  link.download = 'canvas_image.png';
-  link.href = imgData;
-  link.click();
-});
+        // Convert canvas to data URL and save as image
+        var imgData = canvas.toDataURL('image/png');
+        var link = document.createElement('a');
+        link.download = 'canvas_image.png';
+        link.href = imgData;
+        link.click();
+      });
     });
   </script>
 </body>
+
 </html>
