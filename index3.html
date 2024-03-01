@@ -167,7 +167,7 @@ $('#save-button').on('click', function() {
   });
 
   // Convert canvas to data URL and save as image
-  var imgData = canvas.toDataURL('image/png');
+  var imgData = canvas.toDataURL('image/png','image/jpg','image/jpeg','image/webp');
   var link = document.createElement('a');
   link.download = 'canvas_image.png';
   link.href = imgData;
